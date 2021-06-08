@@ -7,12 +7,18 @@ AWS Lambda
 mongoDB
 
 # How to use
-1.clone the repo. 
+1.clone the repo.
+
 2.npm i 
+
 3.add your DB URL in db.js 
+
 4.RUN serverless deploy in your terminal. 
+
 
 # REQUIREMENT
 node
+
 AWS Account
+
 serverless npm
