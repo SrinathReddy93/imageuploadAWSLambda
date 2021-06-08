@@ -1,0 +1,50 @@
+service: serverless-image-upload
+frameworkVersion: '2'
+custom:
+    bucket: lambda-interview-tests
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  region: us-east-1
+  apiGateway:
+        binaryMediaTypes:
+            - '*/*'
+  iamRoleStatements:
+          - Effect: "Allow"
+            Action:
+              - "s3:PutObject"
+              - "s3:GetObject"
+            Resource:
+              - "arn:aws:s3:::${self:custom.bucket}/*"
+resources:
+    Resources:
+        StorageBucket:
+            Type: "AWS::S3::Bucket"
+            Properties:
+                BucketName: ${self:custom.bucket}    
+functions:
+  hello:
+    handler: src/handler/registerUser.createUser
+    events:
+      - http:
+          path: register-user
+          method: post
+          cors: true
+  login:
+    handler: src/handler/login.loginUser
+    events:
+      - http:
+          path: loginUser
+          method: post
+          cors: true
+  image:
+    handler: src/handler/uploadImage.uploadImageToS
+    events:
+      - http:
+          path: uploadImage
+          method: post
+          cors: true
+          environment: 
+            Bucket: ${self:custom.bucket}
